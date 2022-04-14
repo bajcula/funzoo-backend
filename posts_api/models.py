@@ -9,7 +9,7 @@ class Post(models.Model):
     pet_category = models.CharField(max_length=32)
     description = models.CharField(max_length=256)
     location = models.CharField(max_length=64)
-    img = models.CharField(max_length=256)
+    img = models.FileField(upload_to='post_images')
     authorID = models.ForeignKey(User, on_delete=models.CASCADE)
     authorName = models.CharField(max_length=64, default='anonymus user')
     created_at = models.DateTimeField(auto_now_add=True)
