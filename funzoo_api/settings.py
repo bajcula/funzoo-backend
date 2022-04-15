@@ -28,8 +28,9 @@ SECRET_KEY = 'django-insecure-%iehuw*lqsviehigwpy*g10=gbylda5y-79p)s(v1!1)p*4s2d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'boiling-gorge-49453.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'funzoo-backend.herokuapp.com']
 
+CSRF_TRUSTED_ORIGINS = ['https://*.mydomain.com','https://*.127.0.0.1', 'http://localhost:3000', 'https://funzoo.herokuapp.com/']
 # Application definition
 
 INSTALLED_APPS = [
