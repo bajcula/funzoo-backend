@@ -1,11 +1,10 @@
-from typing import Optional
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
 # Create your models here.
 class MyUserManager(BaseUserManager):
-    def create_user(self, email, name, password=None):
+    def create_user(self, email, password,  name):
         if not email:
             raise ValueError('Users must have an email address.')
         if not name:
@@ -16,8 +15,16 @@ class MyUserManager(BaseUserManager):
             # WHY IS IT NOT ASKING ME FOR A NAME????!!!!
         )
         user.set_password(password)
-        user.save(using=self._db)
+        user.save()
         return user
+    
+        # def save(self, commit=True):
+        # # Save the provided password in hashed format
+        # user = super().save(commit=False)
+        # user.set_password(self.cleaned_data["password1"])
+        # if commit:
+        #     user.save()
+        # return user
 
     def create_superuser(self, email, name="default_name", password=None):
 
@@ -42,13 +49,14 @@ class MyUser(AbstractBaseUser):
         blank=True,
         null=True
     )
+   
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['password']
 
     def __str__(self):
         return self.name
