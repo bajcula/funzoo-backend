@@ -30,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'funzoo-backend.herokuapp.com']
 
+CSRF_TRUSTED_ORIGINS = ['https://*.mydomain.com','https://*.127.0.0.1', 'http://localhost:3000', 'https://funzoo.herokuapp.com/']
 # Application definition
 
 INSTALLED_APPS = [

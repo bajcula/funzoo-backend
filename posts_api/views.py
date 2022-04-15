@@ -1,10 +1,14 @@
+from audioop import reverse
 from json import JSONEncoder
-
+from tokenize import Number
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, serializers
 from .serializers import PostSerializer
-from .models import Post
+from .models import Post, User
 from django.http import JsonResponse
-
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 class PostList(generics.ListCreateAPIView):
@@ -19,23 +23,7 @@ class UsersPostsList(generics.ListCreateAPIView):
     # queryset = Post.objects.all().order_by('id') # tell django how to retrieve all objects from the DB, order by id ascending
     serializer_class = PostSerializer # tell django what serializer to use
     http_method_names = ['get']
-    # TRYING TO FILTER OUT
-    # objects = [
-    #     my_object 
-    #     for my_object in Post.objects.all() 
-    #     if my_object.authorID_id == self.kwargs['parameter']
-    # ]
-    # queryset = objects
-    
-    #3rd TRY
-    # def get_queryset(self):
-    #     if self.request.method == 'GET':
-    #         queryset = Post.objects.all()
-    #         theID = self.request.GET.get('q', None)
-    #         if theID is not None:
-    #             queryset = queryset.filter(authorID_id=theID)
-    #         return queryset
-    
+
     # 2nd TRY
     def get(self, request, **kwargs):
         posts = Post.objects.all()
@@ -45,5 +33,15 @@ class UsersPostsList(generics.ListCreateAPIView):
         data = list(filteredPosts.values())
         return JsonResponse(data, safe=False)   
         
+     
+def LikeView(request, postID, usersID):
+    post = Post.objects.get(id=postID)
+    post.users_liked_by.add(usersID)
+    # post.popularity += 1
+    return HttpResponse(content=post)
 
-        
+def UnlikeView(request, postID, usersID):
+    post = Post.objects.get(id=postID)
+    # post.popularity -= 1
+    post.users_liked_by.remove(usersID)
+    return HttpResponse(content=post)
