@@ -11,3 +11,6 @@ typing-extensions==3.10.0.2
 whitenoise==6.0.0
 PyJWT==2.1.0
 djangorestframework-simplejwt==5.1.0
+django-environ==0.8.1
+cloudinary==1.29.0
+dj3-cloudinary-storage==0.0.6
