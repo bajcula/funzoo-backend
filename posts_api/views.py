@@ -7,8 +7,6 @@ from .serializers import PostSerializer, EditPostSerializer
 from .models import Post, User
 from django.http import JsonResponse
 from django.http import  HttpResponse
-from django.urls import reverse
-
 
 
 class PostList(generics.ListCreateAPIView):
@@ -20,7 +18,6 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EditPostSerializer
     
 class UsersPostsList(generics.ListCreateAPIView):
-    # queryset = Post.objects.all().order_by('id') # tell django how to retrieve all objects from the DB, order by id ascending
     serializer_class = PostSerializer # tell django what serializer to use
     http_method_names = ['get']
 
@@ -34,7 +31,6 @@ class UsersPostsList(generics.ListCreateAPIView):
         return JsonResponse(data, safe=False)   
         
 class UsersSavedPostsList(generics.ListCreateAPIView):
-    # queryset = Post.objects.all().order_by('id') # tell django how to retrieve all objects from the DB, order by id ascending
     serializer_class = PostSerializer # tell django what serializer to use
     http_method_names = ['get']
 
