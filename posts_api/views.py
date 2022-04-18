@@ -3,21 +3,21 @@ from json import JSONEncoder
 from tokenize import Number
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, serializers
-from .serializers import PostSerializer
+from .serializers import PostSerializer, EditPostSerializer
 from .models import Post, User
 from django.http import JsonResponse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import  HttpResponse
 from django.urls import reverse
-from django.views.decorators.csrf import ensure_csrf_cookie
+
 
 
 class PostList(generics.ListCreateAPIView):
-    queryset = Post.objects.all().order_by('id') # tell django how to retrieve all objects from the DB, order by id ascending
+    queryset = Post.objects.all().order_by('-id') # tell django how to retrieve all objects from the DB, order by id ascending
     serializer_class = PostSerializer # tell django what serializer to use
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all().order_by('id')
-    serializer_class = PostSerializer
+    queryset = Post.objects.all().order_by('-id')
+    serializer_class = EditPostSerializer
     
 class UsersPostsList(generics.ListCreateAPIView):
     # queryset = Post.objects.all().order_by('id') # tell django how to retrieve all objects from the DB, order by id ascending
@@ -26,7 +26,7 @@ class UsersPostsList(generics.ListCreateAPIView):
 
     # 2nd TRY
     def get(self, request, **kwargs):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-id')
         filteredPosts = posts.filter(authorID_id=kwargs["id"])
         # print('this isssssss', kwargs['id'])
         # print(filteredPosts.values())
@@ -44,7 +44,7 @@ class UsersSavedPostsList(generics.ListCreateAPIView):
         # posts = Post.objects.all()
         # filteredPosts = posts.filter(authorID_id=kwargs["id"])
         # filteredPosts = posts.filter(authorID_id=kwargs["id"])
-        result = Post.objects.all()
+        result = Post.objects.all().order_by('-id')
         # result.values('users_liked_by').filter(id=kwargs["id"])
         usersSavedPostsTuples = result.values_list('users_liked_by', 'id')
 
