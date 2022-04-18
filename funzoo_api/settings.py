@@ -14,16 +14,17 @@ from datetime import timedelta
 from pathlib import Path
 import dj_database_url
 import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+env = environ.Env()
+environ.Env.read_env()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%iehuw*lqsviehigwpy*g10=gbylda5y-79p)s(v1!1)p*4s2d'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -35,6 +36,7 @@ CSRF_TRUSTED_ORIGINS = ['https://*.mydomain.com','https://*.127.0.0.1', 'http://
 
 INSTALLED_APPS = [
     'corsheaders',
+    'cloudinary',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
@@ -100,6 +102,8 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'funzoo_api.wsgi.application'
 
 # Database
@@ -110,7 +114,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'funzoo',
         'USER': 'postgres',
-        'PASSWORD': '123',
+        'PASSWORD': env('DATABASE_PASS'),
         'HOST': 'localhost'
     }
 }
@@ -147,6 +151,14 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# CLOUDINARY
+CLOUDINARY_STORAGE = {
+'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
+'API_KEY': env('CLOUDINARY_API_KEY'),
+'API_SECRET': env('CLOUDINARY_SECRET_KEY'),
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 # Static files (CSS, JavaScript, Images)
